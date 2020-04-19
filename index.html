@@ -215,8 +215,33 @@
         imgDiv.style.background="#ccc";
         
     });
-
-
+    //手机端
+    //鼠标点击设置画布起点
+    $("#mycanvas").ontouchstart=function(a){
+        bool=true;
+        console.log("mousedown",bool);
+        ctx.beginPath();//起始/重置一条路径
+        ctx.moveTo(a.touches[0].clienX,a.touches[0].clientY); //把路径移动到画布中的指定点，不创建线条
+        var pic=ctx.getImageData(0,0,canvasW,canvasH);//获取当前画布的图像
+        img.push(pic);//将当前图像存入数组
+    };
+    //当bool=ture时鼠标移动画线
+    /* $("#mycanvas") */canvas.ontouchmove=function(e){
+       console.log("mousemove",bool);
+        if(bool){ //通过bool值控制画线的连续性,如果bool=true,画线
+            console.log("if(bool)",bool);
+            ctx.lineTo(e.touches[0].clientX,e.touches[0].clientY);//添加一个新点，在画布中创建从该点到最后指定点的线条
+            ctx.stroke();//画线
+        }
+    };
+    //鼠标移出画布或者抬起时，退出当前画线，并新建画线，实现画线断续
+    /* $("#mycanvas") */canvas.ontouchend=function(e){
+        ctx.closePath();//当鼠标移出画布区域时,创建从当前点回到起始点的路径
+        bool=false;
+        console.log("mouseout",bool);
+    }; 
+     
+ 
 
         
     
